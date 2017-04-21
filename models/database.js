@@ -11,7 +11,7 @@ exports.Users = class Users{
 
   constructor(){
     client.query('CREATE TABLE IF NOT EXISTS users(name TEXT, email TEXT, password TEXT)');
-    client.query('ALTER TABLE IF  EXISTS users ADD COLUMN id SERIAL PRIMARY KEY;').catch(function(){
+    client.query('ALTER TABLE IF EXISTS users ADD COLUMN id SERIAL PRIMARY KEY;').catch(function(){
 
     });
   }

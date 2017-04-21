@@ -39,9 +39,6 @@ app.get('/', function(req,res){
 
       res.render('index', {user: user});
     });
-
-
-
   }
   else{
     sess.logged = false;
@@ -55,6 +52,35 @@ app.get('/login', function(req, res){
   }
   else{
     res.redirect('/');
+  }
+});
+
+app.get('/about', function(req,res){
+  sess = req.session;
+  if(sess.logged){
+    users.get('id', sess.user_id, function(u){
+      user = u[0];
+      res.render('about', {user: user});
+    });
+  }
+  else{
+    sess.logged = false;
+    res.render('about', {user: false});
+  }
+});
+
+
+app.get('/sponsors', function(req,res){
+  sess = req.session;
+  if(sess.logged){
+    users.get('id', sess.user_id, function(u){
+      user = u[0];
+      res.render('sponsors', {user: user});
+    });
+  }
+  else{
+    sess.logged = false;
+    res.render('sponsors', {user: false});
   }
 });
 
