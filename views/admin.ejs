@@ -1,0 +1,44 @@
+<div class="container">
+  <h1 class="title">Admin Panel</h1>
+  <hr class="hr-white">
+</div>
+<div class="container">
+
+  <table class="messages-tbl">
+    <thead>
+      <tr>
+      <td class="">
+        Name
+      </td>
+      <td>
+        Email
+      </td>
+      <td>
+        Team Number
+      </td>
+      <td>
+        Message
+      </td>
+      </tr>
+    </thead>
+    <tbody>
+      <%for(var i =0;i<m.length;i++){%>
+        <tr>
+        <td class="">
+          <%=m[i].name%>
+        </td>
+        <td>
+          <%=m[i].email%>
+        </td>
+        <td>
+          <%=m[i].team_number%>
+        </td>
+        <td>
+          <%=m[i].body%>
+        </td>
+        </tr>
+      <%}%>
+    </tbody>
+
+  </table>
+</div>

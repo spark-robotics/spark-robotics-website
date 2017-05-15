@@ -18,12 +18,26 @@ exports.Users = class Users{
   get(selector ,_name, callback){
     if(typeof _name == "string"){
       client.query(`SELECT * FROM users WHERE ${selector} = '${_name}'`, function(err, result){
+        if(result!==null){
+          //console.log(result.rows);
           callback(result.rows);
+        }
+        else{
+          //console.log(result.rows);
+          callback(false);
+        }
+
       });
     }
     else{
       client.query(`SELECT * FROM users WHERE ${selector} = ${_name}`, function(err, result){
+        if(result!==null){
           callback(result.rows);
+        }
+        else{
+          callback(false);
+        }
+
       });
     }
 
@@ -43,6 +57,63 @@ exports.Users = class Users{
   }
   dropTable(){
     client.query('DROP TABLE users');
+  }
+};
+
+exports.Messages = class Messages{
+
+  constructor(){
+    client.query('CREATE TABLE IF NOT EXISTS messages(name TEXT, email TEXT, team_number TEXT, body TEXT)');
+    client.query('ALTER TABLE IF EXISTS messages ADD COLUMN id SERIAL PRIMARY KEY;').catch(function(){
+
+    });
+  }
+  get(selector ,_name, callback){
+    if(typeof _name == "string"){
+      client.query(`SELECT * FROM messages WHERE ${selector} = '${_name}'`, function(err, result){
+        if(result!==null){
+          //console.log(result.rows);
+          callback(result.rows);
+        }
+        else{
+          //console.log(result.rows);
+          callback(false);
+        }
+
+      });
+    }
+    else{
+      client.query(`SELECT * FROM messages WHERE ${selector} = ${_name}`, function(err, result){
+        if(result!==null){
+          callback(result.rows);
+        }
+        else{
+          callback(false);
+        }
+
+      });
+    }
+  }
+  get_all(callback){
+    client.query('SELECT * FROM messages', function(err, result){
+      if(result !== null){
+        callback(result.rows);
+      }
+      else{
+        callback(false);
+      }
+    });
+  }
+  insert(_name, _email, _team_number, _body, callback){
+    client.query(`INSERT INTO messages(name,email,team_number,body) VALUES('${_name}','${_email}', '${_team_number}', '${_body}')`, function(err, resul){
+      callback(resul);
+    });
+    //TODO Make this better, i am tired and I cant think of a better way to do this
+
+
+  }
+  dropTable(){
+    client.query('DROP TABLE messages');
   }
 };
 

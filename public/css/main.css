@@ -1,7 +1,130 @@
 html, body{
   height:100%;
   background-color: rgb(30,30,30);
+  margin: 0;
+  color:white;
+}
 
+
+body, header {
+    width: 100%;
+    height: 97.5%;
+}
+
+header {
+    display: flex;
+    position: relative;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column;
+
+
+}
+.two{
+  display: flex;
+  position: relative;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.front-register {
+    background-color: rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, .5);
+    border-radius: 3px;
+    margin: 5px;
+}
+
+
+.front-register::-webkit-input-placeholder {
+    /* WebKit, Blink, Edge */
+    color: black;
+}
+
+.front-register:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: black;
+    opacity: 1;
+}
+
+.front-register::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: black;
+    opacity: 1;
+}
+
+.front-register:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: black;
+}
+
+.background-image {
+    background-image: url("/img/background.jpg");
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.background-image2 {
+    background-image: url("http://cdn.westportnow.com/ee/images/uploads/downtownaerialfile.jpg");
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.background-mask2 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, .7);
+}
+
+
+
+.background-mask {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, .4);
+}
+
+.title {
+    font-size: 72px;
+    color: white;
+    z-index: 1;
+    text-align: center;
+    margin: 10px;
+    font-family: niveau-grotesk, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+}
+
+.title-content {
+    z-index: 1;
+    text-align: center;
+    width: 50%;
 }
 .top-section{
   background: rgb(0,0,0);
@@ -42,8 +165,9 @@ html, body{
   color:lightgrey;
 }
 .logo{
-  display: block;
-  height: 50%;
+
+  width: 50%;
+
 }
 .video-container{
   position: relative;
@@ -166,6 +290,18 @@ video{
   align-items: flex-start;
 }
 
+.bios-desc{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+.card-desc{
+  width: 100%;
+  height: 100%;
+}
+
 .card-sponsor{
   width: 40%;
   background-color: #303030;
@@ -179,4 +315,25 @@ video{
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+}
+
+.contact-input{
+  margin: 10px;
+}
+.messages-tbl{
+width: 100%;
+border-width: 1px;
+border-color: white;
+border-style: solid;
+}
+
+.messages-tbl thead tr td{
+  padding: 10px;
+  font-weight: bold;
+}
+
+.messages-tbl tr {
+  border-width: 1px;
+  border-color: white;
+  border-style: solid;
 }

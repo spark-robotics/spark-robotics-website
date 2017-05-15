@@ -13,6 +13,7 @@ port = 8080;
 var db = require(__dirname + '/models/database.js');
 
 var users = new db.Users();
+var messages = new db.Messages();
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
@@ -48,7 +49,7 @@ app.get('/', function(req,res){
 
 app.get('/login', function(req, res){
   if(!req.session.logged){
-    res.render('login', {user: false});
+    res.render('login', {user: false, alert: false});
   }
   else{
     res.redirect('/');
@@ -84,6 +85,37 @@ app.get('/sponsors', function(req,res){
   }
 });
 
+
+app.get('/contact', function(req,res){
+  sess = req.session;
+  if(sess.logged){
+    users.get('id', sess.user_id, function(u){
+      user = u[0];
+      res.render('contact', {user: user, alert: false});
+    });
+  }
+  else{
+    sess.logged = false;
+    res.render('contact', {user: false, alert: false});
+  }
+});
+
+app.get('/admin', function(req,res){
+  sess = req.session;
+  if(sess.logged){
+    users.get('id', sess.user_id, u=>{
+      user = u[0];
+      messages.get_all(m=>{
+        console.log(m[0].name);
+        res.render('admin', {user: user, messages: m});
+      });
+    });
+  }
+  else{
+    res.redirect('/');
+  }
+});
+
 app.get('/logout', function(req, res){
   req.session.destroy(function(err, result){
     console.log(err);
@@ -92,20 +124,44 @@ app.get('/logout', function(req, res){
 
 });
 
+app.get('/user/login', function(req,res){
+  res.redirect('/login');
+});
+
 /* POST REQUESTS */
 
 app.post('/user/login', urlencodedParser, function(req,res){
   users.get('email', req.body.email, function(i){
-    bcrypt.compare(req.body.password, i[0].password, function(err, result){
-      if(result){
+    if(i.length !== 0){
 
-        req.session.user_id = i[0].id;
-        req.session.logged = true;
+      bcrypt.compare(req.body.password, i[0].password, function(err, result){
+        if(result){
+          req.session.user_id = i[0].id;
+          req.session.logged = true;
+          res.redirect('/');
+        }
+        else{
+          res.render('login', {user: false, alert: "Wrong Email or Password"});
+        }
+    });
+  }else{
+        res.render('login', {user: false, alert: "Wrong Email or Password"});
       }
 
-      res.redirect('/');
+
     });
   });
+
+app.post('/contact/new', urlencodedParser, function(req,res){
+  sess = req.session;
+  if(!sess.logged){
+  messages.insert(req.body.name, req.body.email, req.body.team_number, req.body.body, function(result){
+      console.log(req.body.name + ":" + req.body.email + ":" + req.body.team_number + ":" + req.body.body);
+      res.render('contact', {user: false, alert: "Message Sent! We'll send an email back as soon as we can."});
+  });
+}else{
+    res.redirect('/');
+}
 });
 
 app.post('/user/create', urlencodedParser,function(req,res){

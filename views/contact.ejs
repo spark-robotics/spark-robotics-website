@@ -1,0 +1,34 @@
+<div class="container">
+  <h1 class="title">Contact Us</h1>
+  <hr class="hr-white" />
+  <% if (alert) {%>
+    <div class="alert alert-success" role="alert">
+      <strong>Sweet!</strong> <%=alert%>
+    </div>
+  <%}%>
+  <form id="contact" action="/contact/new" method="post">
+    <div class="row">
+      <div class="col">
+        <input class="form-control contact-input" name="name" placeholder="Name" />
+      </div>
+      <div class="col">
+        <input class="form-control contact-input" name="email" type="email" placeholder="Email" />
+      </div>
+
+      <div class="col">
+        <input class="form-control center contact-input" name="team_number" placeholder="Team Number" />
+      </div>
+      <textarea name="body" placeholder="Message" class="form-control"></textarea>
+    </div>
+
+
+
+
+
+
+
+
+      <button class="btn btn-success" type="submit">Submit</button>
+    </div>
+  </form>
+</div>
