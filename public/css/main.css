@@ -11,6 +11,11 @@ body, header {
     height: 97.5%;
 }
 
+iframe{
+  width: 100%;
+  height: 300px;
+}
+
 header {
     display: flex;
     position: relative;
@@ -21,6 +26,8 @@ header {
 
 
 }
+
+
 .two{
   display: flex;
   position: relative;
@@ -68,7 +75,7 @@ header {
     width: 100%;
     height: 100%;
 
-    background-attachment: fixed;
+    /*background-attachment: fixed;*/
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -116,7 +123,7 @@ header {
     z-index: 1;
     text-align: center;
     margin: 10px;
-    font-family: niveau-grotesk, sans-serif;
+    font-family: 'Raleway', sans-serif;
     font-style: normal;
     font-weight: 400;
 }
@@ -145,11 +152,13 @@ header {
 
 
 .nav{
-  background-color: rgb(30,30,30);
+  background-color:rgb(255, 179, 15);
 }
 .nav-text{
   text-decoration: none;
-  color:white;
+  color:black;
+  font-weight: bold;
+  font-family: 'Raleway', sans-serif;
 }
 .nav-link:hover{
   text-decoration: none;
@@ -187,6 +196,8 @@ video{
   font-size: 52px;
   color: white;
   padding: 60px;
+  font-family: 'Raleway', sans-serif;
+  font-weight: bold;
 }
 .title-caption{
   text-align: center;
@@ -240,6 +251,7 @@ video{
 .bio-pic{
   width: 100%;
 }
+
 .card-block{
   color: white;
 }
@@ -251,25 +263,79 @@ video{
 }
 
 .card-bio{
-  width: 15%;
   background-color: #303030;
   box-shadow: 5px 5px 10px #000000;
   margin: 20px;
 }
+
+.card-quick-bio{
+  width: 75%;
+}
+
+.mobile{
+  visibility: hidden;
+}
+
+.about-card-flex{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.card-about{
+  width:90%;
+  text-align: center;
+
+  border: none;
+
+}
+
+.card-about-half{
+  width: 44%;
+  margin: 10px;
+}
+
+.card-about-orange{
+  background-color: rgb(255, 179, 15);
+}
+
+.card-about-red{
+  background-color: rgb(216, 23, 23);
+}
+
+.card-about-yellow{
+  background-color: rgb(237, 233, 0);
+}
+
+.card-about-orange .card-block{
+    color:black;
+}
+
+.card-about-yellow .card-block{
+    color:black;
+}
+
+.card-block-about{
+  font-size: 26px;
+}
+
 @media only screen and (max-width: 775px) {
-  .card-quick-bio{
-    width: 35%;
-    background-color: #303030;
-    box-shadow: 5px 5px 10px #000000;
-    margin-top: 10px;
-  }
+
     .top-section{
       height: 200%;
+    }
+    .mobile{
+      visibility: visible;
     }
     .title{
       text-align: center;
       font-size: 55px;
       color: white;
+    }
+
+    .desktop{
+      visibility: hidden;
     }
 
 

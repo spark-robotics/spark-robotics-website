@@ -13,6 +13,7 @@
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
     "express-partials": "^0.3.0",
-    "express-session": "^1.15.2"
+    "express-session": "^1.15.2",
+    "nodemailer": "^4.0.1"
   }
 }

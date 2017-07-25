@@ -1,7 +1,8 @@
 /*jshint esversion: 6 */
 
 const pg = require('pg');
-const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/spark-robotics';
+//const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/spark-robotics';
+const connectionString = 'postgres://bunrfgdqobyiqf:271cce353713ca807494ecaceffead09207a67d8b915c9bbebef784a21694d31@ec2-107-20-226-93.compute-1.amazonaws.com:5432/de3auqudcfqkve';
 
 const client = new pg.Client(connectionString);
 

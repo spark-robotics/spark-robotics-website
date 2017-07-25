@@ -2,18 +2,22 @@
 
 var express = require('express'),
 app = express(),
-pg = require('pg'),
+//pg = require('pg'),
 bodyParser = require('body-parser'),
 parials = require('express-partials'),
 session = require('express-session'),
-bcrypt = require('bcrypt');
-client = new pg.Client();
+bcrypt = require('bcrypt'),
+reqs = require('request'),
+//client = new pg.Client();
 port = 8080;
 
-var db = require(__dirname + '/models/database.js');
 
-var users = new db.Users();
-var messages = new db.Messages();
+//var db = require(__dirname + '/models/database.js');
+
+//var users = new db.Users();
+//var messages = new db.Messages();
+
+
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
@@ -88,15 +92,24 @@ app.get('/sponsors', function(req,res){
 
 app.get('/contact', function(req,res){
   sess = req.session;
+  var alert;
+
+ if(req.query.valid){
+   alert = true;
+ }
+ else{
+   alert = false;
+ }
+
   if(sess.logged){
     users.get('id', sess.user_id, function(u){
       user = u[0];
-      res.render('contact', {user: user, alert: false});
+      res.render('contact', {user: user, alert: null});
     });
   }
   else{
     sess.logged = false;
-    res.render('contact', {user: false, alert: false});
+    res.render('contact', {user: false, alert: null});
   }
 });
 
@@ -147,22 +160,8 @@ app.post('/user/login', urlencodedParser, function(req,res){
   }else{
         res.render('login', {user: false, alert: "Wrong Email or Password"});
       }
-
-
     });
   });
-
-app.post('/contact/new', urlencodedParser, function(req,res){
-  sess = req.session;
-  if(!sess.logged){
-  messages.insert(req.body.name, req.body.email, req.body.team_number, req.body.body, function(result){
-      console.log(req.body.name + ":" + req.body.email + ":" + req.body.team_number + ":" + req.body.body);
-      res.render('contact', {user: false, alert: "Message Sent! We'll send an email back as soon as we can."});
-  });
-}else{
-    res.redirect('/');
-}
-});
 
 app.post('/user/create', urlencodedParser,function(req,res){
       bcrypt.hash(req.body.password,10, function(err, hash){
@@ -175,6 +174,38 @@ app.post('/user/create', urlencodedParser,function(req,res){
 
       });
 });
+
+
+
+
+app.post('/contact/send', urlencodedParser, (req,res)=>{
+  reqs.post(
+    'https://hooks.slack.com/services/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',
+    { json: {
+        text: "New Message from website", attachments:
+        [{
+          text: "*Name:* " + req.body.name + "\n" + "*Email:* " + req.body.email + "\n" + "*Team Number:* " + req.body.team_number + "\n\n",
+          color: '#'+Math.floor(Math.random()*16777215).toString(16),
+          mrkdwn_in: ["text"]
+        },
+        {
+          text: "_" + req.body.body + "_",
+          color: '#'+Math.floor(Math.random()*16777215).toString(16),
+          mrkdwn_in: ["text"]
+        }],
+   } },
+    function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            res.redirect('/contact?valid=sent');
+        }
+        else{
+          res.redirect('/contact?valid=error');
+        }
+    }
+);
+});
+
+
 
 app.listen(port, function(){
   console.log("App running on " + port);

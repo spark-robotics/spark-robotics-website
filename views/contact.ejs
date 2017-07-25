@@ -2,11 +2,15 @@
   <h1 class="title">Contact Us</h1>
   <hr class="hr-white" />
   <% if (alert) {%>
-    <div class="alert alert-success" role="alert">
-      <strong>Sweet!</strong> <%=alert%>
+    <div class="alert alert-success contact-input" style="width: 100%" role="alert">
+      <strong>Sweet!</strong> Message sent!
+    </div>
+  <%}else if (alert == "error"){ %>
+    <div class="alert alert-danger contact-input" style="width: 100%" role="alert">
+      <strong>Aw Darn!</strong>  Message not sent due to an error :(
     </div>
   <%}%>
-  <form id="contact" action="/contact/new" method="post">
+  <form id="contact" action="/contact/send" method="post">
     <div class="row">
       <div class="col">
         <input class="form-control contact-input" name="name" placeholder="Name" />
@@ -18,17 +22,12 @@
       <div class="col">
         <input class="form-control center contact-input" name="team_number" placeholder="Team Number" />
       </div>
-      <textarea name="body" placeholder="Message" class="form-control"></textarea>
-    </div>
+      </div>
+      <textarea name="body" rows=10 placeholder="Message" class="form-control contact-input"></textarea>
 
-
-
-
-
-
-
-
-      <button class="btn btn-success" type="submit">Submit</button>
+      <div style="text-align: right">
+        <button class="btn btn-success" type="submit">Submit</button>
+      </div>
     </div>
   </form>
 </div>
