@@ -9,7 +9,7 @@ session = require('express-session'),
 bcrypt = require('bcrypt'),
 reqs = require('request');
 //client = new pg.Client();
-app.set('port', (process.env.PORT || 5000));
+app.set('port', (process.env.PORT || 8080));
 
 
 //var db = require(__dirname + '/models/database.js');

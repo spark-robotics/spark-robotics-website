@@ -152,11 +152,12 @@ header {
 
 
 .nav{
-  background-color:rgb(255, 179, 15);
+  background-color:rgb(30, 30, 30);
+  border-bottom: solid rgb(255, 179, 15)
 }
 .nav-text{
   text-decoration: none;
-  color:black;
+  color:white;
   font-weight: bold;
   font-family: 'Raleway', sans-serif;
 }
@@ -287,7 +288,7 @@ video{
   width:90%;
   text-align: center;
 
-  border: none;
+
 
 }
 
@@ -297,7 +298,8 @@ video{
 }
 
 .card-about-orange{
-  background-color: rgb(255, 179, 15);
+  /*background-color: rgb(255, 179, 15);*/
+  border-color:rgb(255, 179, 15);
 }
 
 .card-about-red{
@@ -305,16 +307,13 @@ video{
 }
 
 .card-about-yellow{
-  background-color: rgb(237, 233, 0);
+  /*background-color: rgb(237, 233, 0);*/
+  border-color: rgb(237, 233, 0);
 }
 
-.card-about-orange .card-block{
-    color:black;
-}
 
-.card-about-yellow .card-block{
-    color:black;
-}
+
+
 
 .card-block-about{
   font-size: 26px;
@@ -336,6 +335,39 @@ video{
 
     .desktop{
       visibility: hidden;
+    }
+
+    .bios-pics{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .card-bio{
+      width:100%;
+    }
+
+    .card-about-half{
+      width: 90%;
+    }
+
+    .bios-desc{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      flex-wrap: wrap;
+      height: 100%;
+      width: 100%;
+    }
+
+    .card-bio{
+      margin-bottom: 0;
+    }
+
+    .card-desc{
+      margin-top: 0;
+      border-top: none;
     }
 
 
