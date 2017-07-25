@@ -7,7 +7,7 @@ bodyParser = require('body-parser'),
 parials = require('express-partials'),
 session = require('express-session'),
 bcrypt = require('bcrypt'),
-reqs = require('request'),
+reqs = require('request');
 //client = new pg.Client();
 app.set('port', (process.env.PORT || 5000));
 
