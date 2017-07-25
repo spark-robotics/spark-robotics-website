@@ -9,7 +9,7 @@ session = require('express-session'),
 bcrypt = require('bcrypt'),
 reqs = require('request');
 //client = new pg.Client();
-app.set('port', (process.env.PORT || 5000));
+port = rocess.env.PORT || 8080;
 
 
 //var db = require(__dirname + '/models/database.js');
@@ -207,6 +207,6 @@ app.post('/contact/send', urlencodedParser, (req,res)=>{
 
 
 
-app.listen(app.get('port'), function(){
+app.listen(port, function(){
   console.log("App running on " + port);
 });
