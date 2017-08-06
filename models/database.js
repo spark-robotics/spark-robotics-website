@@ -1,9 +1,10 @@
 /*jshint esversion: 6 */
 
 const pg = require('pg');
-//const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/spark-robotics';
-const connectionString = 'postgres://bunrfgdqobyiqf:271cce353713ca807494ecaceffead09207a67d8b915c9bbebef784a21694d31@ec2-107-20-226-93.compute-1.amazonaws.com:5432/de3auqudcfqkve';
 
+pg.defaults.ssl = true;
+const connectionString = process.env.DATABASE_URL || 'postgres://radqgnvfbkpedn:b32bb13b93066e0018f506689c4e9bae267a533df3f390b71831a8c2899c8a03@ec2-54-235-123-159.compute-1.amazonaws.com:5432/d58va1g8e9tkts';
+//const connectionString =process.env.DATABASE_URL;
 const client = new pg.Client(connectionString);
 
 client.connect();

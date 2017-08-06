@@ -15,7 +15,6 @@ app.set('port', (process.env.PORT || 8080));
 //var db = require(__dirname + '/models/database.js');
 
 //var users = new db.Users();
-//var messages = new db.Messages();
 
 
 
@@ -113,21 +112,7 @@ app.get('/contact', function(req,res){
   }
 });
 
-app.get('/admin', function(req,res){
-  sess = req.session;
-  if(sess.logged){
-    users.get('id', sess.user_id, u=>{
-      user = u[0];
-      messages.get_all(m=>{
-        console.log(m[0].name);
-        res.render('admin', {user: user, messages: m});
-      });
-    });
-  }
-  else{
-    res.redirect('/');
-  }
-});
+
 
 app.get('/logout', function(req, res){
   req.session.destroy(function(err, result){
@@ -162,6 +147,10 @@ app.post('/user/login', urlencodedParser, function(req,res){
       }
     });
   });
+
+app.get("/new", (req,res)=>{
+  res.render('new', {user: false});
+});
 
 app.post('/user/create', urlencodedParser,function(req,res){
       bcrypt.hash(req.body.password,10, function(err, hash){
