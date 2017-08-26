@@ -264,6 +264,7 @@ video{
 }
 
 .card-bio{
+  width: 200px;
   background-color: #303030;
   box-shadow: 5px 5px 10px #000000;
   margin: 20px;
