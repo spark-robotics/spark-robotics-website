@@ -7,13 +7,14 @@ bodyParser = require('body-parser'),
 parials = require('express-partials'),
 session = require('express-session'),
 bcrypt = require('bcrypt'),
-reqs = require('request');
+reqs = require('request'),
+sequelize = require('sequelize');
 //client = new pg.Client();
 app.set('port', (process.env.PORT || 8080));
 
 
 //var db = require(__dirname + '/models/database.js');
-
+var db = require(__dirname + '/models/database_test.js');
 //var users = new db.Users();
 
 
@@ -37,15 +38,15 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.get('/', function(req,res){
   sess = req.session;
   if(sess.logged){
-
-    users.get('id', sess.user_id, function(u){
-      user = u[0];
-
+    db.Users.findOne({
+      where:{
+        id: req.session.user_id
+      }
+    }).then(user=>{
       res.render('index', {user: user});
     });
   }
   else{
-    sess.logged = false;
     res.render('index', {user: false});
   }
 });
@@ -71,6 +72,11 @@ app.get('/about', function(req,res){
     sess.logged = false;
     res.render('about', {user: false});
   }
+});
+
+
+app.get('/beta', (req,res)=>{
+  res.render('beta', {user: false});
 });
 
 
@@ -129,24 +135,30 @@ app.get('/user/login', function(req,res){
 /* POST REQUESTS */
 
 app.post('/user/login', urlencodedParser, function(req,res){
-  users.get('email', req.body.email, function(i){
-    if(i.length !== 0){
+  db.Users.findOne({
+    where: {
+      email: req.body.email
+    }
+  }).then(user=>{
 
-      bcrypt.compare(req.body.password, i[0].password, function(err, result){
-        if(result){
-          req.session.user_id = i[0].id;
-          req.session.logged = true;
-          res.redirect('/');
-        }
-        else{
-          res.render('login', {user: false, alert: "Wrong Email or Password"});
-        }
-    });
-  }else{
+    bcrypt.compare(req.body.password, user.get('password'), function(err, result){
+      if(result){
+        req.session.user_id = user.get('id');
+        req.session.logged = true;
+        res.redirect('/');
+      }
+      else{
         res.render('login', {user: false, alert: "Wrong Email or Password"});
       }
-    });
   });
+  //   if(i.length !== 0){
+      
+  //   });
+  // }else{
+  //       res.render('login', {user: false, alert: "Wrong Email or Password"});
+  //     }
+     });
+   });
 
 app.get("/new", (req,res)=>{
   res.render('new', {user: false});
@@ -154,12 +166,7 @@ app.get("/new", (req,res)=>{
 
 app.post('/user/create', urlencodedParser,function(req,res){
       bcrypt.hash(req.body.password,10, function(err, hash){
-        let id;
-        users.insert(req.body.name, req.body.email, hash, function(user){
-            req.session.logged = true;
-            req.session.user_id = user[0].id;
-            res.redirect('/');
-        });
+        db.Users.create({firstName: req.body.first_name, lastName: req.body.last_name, email: req.body.email, password: hash});
 
       });
 });
