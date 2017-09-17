@@ -118,6 +118,14 @@ app.get('/contact', function(req,res){
   }
 });
 
+app.get('/robot', (req, res)=>{
+  res.render('robot');
+});
+
+app.get('/outreach', (req,res)=>{
+  res.render('outreach');
+});
+
 
 
 app.get('/logout', function(req, res){
@@ -152,7 +160,7 @@ app.post('/user/login', urlencodedParser, function(req,res){
       }
   });
   //   if(i.length !== 0){
-      
+
   //   });
   // }else{
   //       res.render('login', {user: false, alert: "Wrong Email or Password"});

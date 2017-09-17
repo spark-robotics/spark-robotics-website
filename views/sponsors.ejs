@@ -6,6 +6,18 @@
 <div class="card card-sponsor">
   <img class="card-img-top img-responsives bio-pic" src="/img/sponsors/solidworks-Logo-Red.svg"/>
 </div>
-
-
 </div>
+  <div class="popup">
+    <a href="/contact" class="popup-link link-hide"><h5 class="center">Want to become a sponsor? Contact us here!</h5></a>
+      <a class="close-button">
+        <i class="fa fa-times close ns-close" aria-hidden="true"></i>
+      </a>
+   </div>
+
+
+   <script>$('.close-button').on('click', e=>{
+     e.preventDefault();
+     $('.popup').hide();
+
+   });
+</script>

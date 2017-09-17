@@ -1,3 +1,7 @@
+/*jshint esversion: 6 */
+
+
+
 const s = require('sequelize');
 const pg = require('pg');
 
@@ -51,5 +55,3 @@ const Sponsors = db.define('sponsors', {
 db.sync().then(()=>{
     console.log("Database Synced");
 });
-
-
