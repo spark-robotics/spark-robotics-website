@@ -1,12 +1,18 @@
 <h1 class="title">Our Sponsors</h1>
+<%if (user){ %>
+  <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#addSponsorModal">Add Sponsor</button>
+<%}%>
 <hr class="hr-white"/>
 <div class="sponsor-list">
 
   <!-- Sponsors like this -->
+
 <div class="card card-sponsor">
   <img class="card-img-top img-responsives bio-pic" src="/img/sponsors/solidworks-Logo-Red.svg"/>
 </div>
 </div>
+
+
   <div class="popup">
     <a href="/contact" class="popup-link link-hide"><h5 class="center">Want to become a sponsor? Contact us here!</h5></a>
       <a class="close-button">
@@ -21,3 +27,31 @@
 
    });
 </script>
+
+<% if(user) { %>
+<div class="modal" id="addSponsorModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Sponsor</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="/add/sponsor" id="sponsor-form">
+          <div class="form-group">
+            <input class="form-control" name="name" type="text" placeholder="Sponor Name" required/>
+            <input class="form-control" name="donation" type="number" placeholder="Amount Donated" required/>
+            <input class="form-control" name="url" type="text" placeholder="Logo URL" />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" form="sponsor-form" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<%}%>

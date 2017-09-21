@@ -5,7 +5,7 @@
     <title>Spark Robotics</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="/bower_components/jquery/dist/jquery.min.js"></script>
-  
+
     <script src="/bower_components/popper.js/dist/umd/popper.js"></script>
     <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" />
@@ -43,9 +43,25 @@
 
       <ul class="navbar-nav">
 
+        <% if(user) {%>
+          <!-- <a class="nav-link nav-text" href="/logout"></a> -->
 
-            <a class="nav-link nav-text" href="/login">Team Login</a>
+          <div class="dropdown">
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <%= user.firstName %>
+            </a>
 
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item" href="/admin">Dashboard</a>
+
+              <a class="dropdown-item" href="/logout">Logout</a>
+              </div>
+          </div>
+
+        <%} else {%>
+          <a class="nav-link nav-text" href="/login">Team Login</a>
+
+        <%}%>
         </li>
       </ul>
   </div>

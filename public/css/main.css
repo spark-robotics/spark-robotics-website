@@ -402,6 +402,9 @@ video{
   flex-direction: column;
   align-items: flex-start;
 }
+.modal{
+  color: black; 
+}
 
 .bios-desc{
   display: flex;
@@ -469,4 +472,15 @@ border-style: solid;
 
 .close:hover{
   color: white;
+}
+
+
+.header-med{
+  font-size: 56px;
+  color: white;
+  z-index: 1;
+  margin: 10px;
+  font-family: 'Raleway', sans-serif;
+  font-style: normal;
+  font-weight: 400;
 }

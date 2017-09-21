@@ -13,6 +13,10 @@ sequelize = require('sequelize');
 app.set('port', (process.env.PORT || 8080));
 
 
+
+
+
+
 //var db = require(__dirname + '/models/database.js');
 var db = require(__dirname + '/models/database_test.js');
 //var users = new db.Users();
@@ -24,6 +28,8 @@ app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/public'));
 app.use('/bower_components',express.static(__dirname + '/bower_components'));
 
+app.enable('trust proxy');
+
 app.use(parials());
 //TODO: When doing authentication, change the ID from the user location in the database to the generated session Id and store that with the user
 app.use(session({
@@ -34,21 +40,34 @@ app.use(session({
 }));
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-/* GET REQUESTS */
-app.get('/', function(req,res){
-  sess = req.session;
-  if(sess.logged){
+function requireAuth(req, res, next){
+  if(req.session.logged){
+    next();
+  }
+  else{
+    res.redirect('/');
+  }
+}
+function loadCurrentUser(req, res, next){
+
+  if(req.session.logged){
     db.Users.findOne({
       where:{
         id: req.session.user_id
       }
     }).then(user=>{
-      res.render('index', {user: user});
+      req.currentUser = user;
+      next();
     });
+  } else{
+    req.currentUser = false;
+    next();
   }
-  else{
-    res.render('index', {user: false});
-  }
+}
+
+/* GET REQUESTS */
+app.get('/', loadCurrentUser, function(req,res){
+  res.render('index', {user: req.currentUser});
 });
 
 app.get('/login', function(req, res){
@@ -60,42 +79,32 @@ app.get('/login', function(req, res){
   }
 });
 
-app.get('/about', function(req,res){
-  sess = req.session;
-  if(sess.logged){
-    users.get('id', sess.user_id, function(u){
-      user = u[0];
-      res.render('about', {user: user});
-    });
-  }
-  else{
-    sess.logged = false;
-    res.render('about', {user: false});
-  }
+app.get('/about', loadCurrentUser, function(req,res){
+  res.render('about', {user: req.currentUser});
 });
 
 
-app.get('/beta', (req,res)=>{
-  res.render('beta', {user: false});
+app.get('/beta', loadCurrentUser, requireAuth, (req,res)=>{
+  res.render('beta', {user: req.currentUser});
 });
 
 
-app.get('/sponsors', function(req,res){
-  sess = req.session;
-  if(sess.logged){
-    users.get('id', sess.user_id, function(u){
-      user = u[0];
-      res.render('sponsors', {user: user});
-    });
-  }
-  else{
-    sess.logged = false;
-    res.render('sponsors', {user: false});
-  }
+app.get('/sponsors', loadCurrentUser, function(req,res){
+  var sponsors;
+  // db.Sponsors.findAll({
+  //   where: {
+  //     id:{
+  //       $gte: 0
+  //     }
+  //   }
+  // }).then(s=>{
+  //   sponsors = s;
+  // });
+  res.render('sponsors', {user: req.currentUser});
 });
 
 
-app.get('/contact', function(req,res){
+app.get('/contact', loadCurrentUser, function(req,res){
   sess = req.session;
   var alert;
 
@@ -106,24 +115,21 @@ app.get('/contact', function(req,res){
    alert = false;
  }
 
-  if(sess.logged){
-    users.get('id', sess.user_id, function(u){
-      user = u[0];
-      res.render('contact', {user: user, alert: null});
-    });
-  }
-  else{
-    sess.logged = false;
-    res.render('contact', {user: false, alert: null});
-  }
+  res.render('contact', {user: req.currentUser});
 });
 
-app.get('/robot', (req, res)=>{
-  res.render('robot');
+app.get('/robot', loadCurrentUser, (req, res)=>{
+  res.render('robot', {user: req.currentUser});
 });
 
-app.get('/outreach', (req,res)=>{
-  res.render('outreach');
+app.get('/outreach',loadCurrentUser, (req,res)=>{
+  res.render('outreach', {user: req.currentUser});
+});
+
+
+
+app.get('/admin', loadCurrentUser, requireAuth, (req,res)=>{
+  res.render('admin', {user: req.currentUser});
 });
 
 
@@ -136,8 +142,8 @@ app.get('/logout', function(req, res){
 
 });
 
-app.get('/user/login', function(req,res){
-  res.redirect('/login');
+app.get('/user/login', loadCurrentUser, function(req,res){
+  res.redirect('/login', {user: req.currentUser});
 });
 
 /* POST REQUESTS */
@@ -148,28 +154,29 @@ app.post('/user/login', urlencodedParser, function(req,res){
       email: req.body.email
     }
   }).then(user=>{
-
     bcrypt.compare(req.body.password, user.get('password'), function(err, result){
+      console.log(result);
       if(result){
         req.session.user_id = user.get('id');
         req.session.logged = true;
+        console.log(req.session.user_id);
         res.redirect('/');
+
       }
       else{
         res.render('login', {user: false, alert: "Wrong Email or Password"});
       }
   });
-  //   if(i.length !== 0){
-
-  //   });
-  // }else{
-  //       res.render('login', {user: false, alert: "Wrong Email or Password"});
-  //     }
      });
    });
 
 app.get("/new", (req,res)=>{
   res.render('new', {user: false});
+});
+
+app.post('/add/sponsor', urlencodedParser,(req,res)=>{
+  console.log(req.body.name);
+  res.redirect('/sponsor');
 });
 
 app.post('/user/create', urlencodedParser,function(req,res){
@@ -183,12 +190,18 @@ app.post('/user/create', urlencodedParser,function(req,res){
 
 
 app.post('/contact/send', urlencodedParser, (req,res)=>{
+    var name = req.body.name;
+    var number = req.body.team_number;
+    var body = req.body.body;
+    var ip = req.ip;
+
+
   reqs.post(
     'https://hooks.slack.com/services/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',
     { json: {
         text: "New Message from website", attachments:
         [{
-          text: "*Name:* " + req.body.name + "\n" + "*Email:* " + req.body.email + "\n" + "*Team Number:* " + req.body.team_number + "\n\n",
+          text: "*Name:* " + req.body.name + "\n" + "*Email:* " + req.body.email + "\n" + "*Team Number:* " + req.body.team_number + "\n\n" + "*IP:* " + ip,
           color: '#'+Math.floor(Math.random()*16777215).toString(16),
           mrkdwn_in: ["text"]
         },
