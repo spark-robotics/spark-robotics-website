@@ -197,7 +197,7 @@ app.post('/contact/send', urlencodedParser, (req,res)=>{
 
 
   reqs.post(
-    'https://hooks.slack.com/services/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',
+    'https://hooks.slack.com/services/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',
     { json: {
         text: "New Message from website", attachments:
         [{
