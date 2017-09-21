@@ -216,13 +216,13 @@ app.post('/contact/send', urlencodedParser, (req,res)=>{
           mrkdwn_in: ["text"]
         },
         {
-          "title": "Would you like to block this IP?",
-          "actions": [
+          title: "Would you like to block this IP?",
+          actions: [
                {
-                   "name": "block",
-                   "text": "Block",
-                   "type": "button",
-                   "value": ip
+                   name: "block",
+                   text: "Block",
+                   type: "button",
+                   value: ip
                },
            ]
         }
