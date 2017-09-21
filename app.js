@@ -12,6 +12,8 @@ sequelize = require('sequelize');
 //client = new pg.Client();
 app.set('port', (process.env.PORT || 8080));
 
+var slackToken = "MxYYSBXL3PX0Vuauf0d1kBcJ";
+
 
 
 
@@ -189,8 +191,10 @@ app.post('/user/create', urlencodedParser,function(req,res){
 app.post('/slack/block_ip', urlencodedParser, (req,res)=>{
   res.status(200).end();
   var payload = JSON.parse(req.body.payload);
-  db.BannedIps.create({ip: payload.actions[0].value});
-  console.log(payload);
+  if(payload.token == slackToken){
+    db.BannedIps.create({ip: payload.actions[0].value});
+  }
+  console.log("IP Banned: " + payload.actions[0].value);
 });
 
 
@@ -199,8 +203,21 @@ app.post('/contact/send', urlencodedParser, (req,res)=>{
     var number = req.body.team_number;
     var body = req.body.body;
     var ip = req.ip;
+    var valid = true;
 
 
+
+    db.BannedIps.findAll().then(ips=>{
+      for(var i = 0; i < ips.length; i++){
+        if(ip == ips[i].ip){
+          valid = false;
+        }
+      }
+    });
+
+
+
+if(valid){
   reqs.post(
     'https://hooks.slack.com/services/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',
     { json: {
@@ -240,7 +257,9 @@ app.post('/contact/send', urlencodedParser, (req,res)=>{
         }
     }
 );
+}
 });
+
 
 
 
