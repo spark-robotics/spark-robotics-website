@@ -217,7 +217,9 @@ app.post('/contact/send', urlencodedParser, (req,res)=>{
         },
         {
           title: "Would you like to block this IP?",
+          fallback: "Unable to block this IP",
           callback_id: "metke_alpha_beta",
+          attachment_type: "default",
           actions: [
                {
                    name: "block",
