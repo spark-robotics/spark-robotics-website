@@ -33,7 +33,7 @@ exports.Users = db.define('users', {
     }
 });
 
-const Sponsors = db.define('sponsors', {
+exports.Sponsors = db.define('sponsors', {
     name: {
         type: s.Sequelize.STRING
     },
@@ -44,6 +44,12 @@ const Sponsors = db.define('sponsors', {
         type: s.Sequelize.STRING
     }
 
+});
+
+exports.BannedIps = db.define('bannedips', {
+    ip: {
+      type: s.Sequelize.STRING
+    }
 });
 
 

@@ -186,7 +186,12 @@ app.post('/user/create', urlencodedParser,function(req,res){
       });
 });
 
-
+app.post('/slack/block_ip', urlencodedParser, (req,res)=>{
+  res.status(200).end();
+  var payload = JSON.parse(req.body.payload);
+  db.BannedIps.create({ip: payload.actions[0].value});
+  console.log(payload);
+});
 
 
 app.post('/contact/send', urlencodedParser, (req,res)=>{
@@ -199,8 +204,8 @@ app.post('/contact/send', urlencodedParser, (req,res)=>{
   reqs.post(
     'https://hooks.slack.com/services/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',
     { json: {
-        text: "New Message from website", attachments:
-        [{
+        text: "New Message from website",
+        attachments:[{
           text: "*Name:* " + req.body.name + "\n" + "*Email:* " + req.body.email + "\n" + "*Team Number:* " + req.body.team_number + "\n\n" + "*IP:* " + ip,
           color: '#'+Math.floor(Math.random()*16777215).toString(16),
           mrkdwn_in: ["text"]
@@ -209,7 +214,19 @@ app.post('/contact/send', urlencodedParser, (req,res)=>{
           text: "_" + req.body.body + "_",
           color: '#'+Math.floor(Math.random()*16777215).toString(16),
           mrkdwn_in: ["text"]
-        }],
+        },
+        {
+          "title": "Would you like to block this IP?",
+          "actions": [
+               {
+                   "name": "block",
+                   "text": "Block",
+                   "type": "button",
+                   "value": ip
+               },
+           ]
+        }
+      ],
    } },
     function (error, response, body) {
         if (!error && response.statusCode == 200) {
