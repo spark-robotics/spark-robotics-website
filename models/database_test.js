@@ -37,6 +37,9 @@ exports.Sponsors = db.define('sponsors', {
     name: {
         type: s.Sequelize.STRING
     },
+    donation: {
+      type: s.Sequelize.INTEGER
+    },
     img_url: {
         type: s.Sequelize.STRING
     },

@@ -1,15 +1,19 @@
 <h1 class="title">Our Sponsors</h1>
 <%if (user){ %>
+  <div class="center">
   <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#addSponsorModal">Add Sponsor</button>
+
+  </div>
 <%}%>
 <hr class="hr-white"/>
 <div class="sponsor-list">
 
   <!-- Sponsors like this -->
-
-<div class="card card-sponsor">
-  <img class="card-img-top img-responsives bio-pic" src="/img/sponsors/solidworks-Logo-Red.svg"/>
-</div>
+<% for(var i = 0; i < sponsors.length; i++){%>
+  <div class="card card-sponsor">
+    <img class="card-img-top img-responsives bio-pic" src="<%=sponsors[i].img_url%>"/>
+  </div>
+<%}%>
 </div>
 
 
@@ -43,7 +47,8 @@
           <div class="form-group">
             <input class="form-control" name="name" type="text" placeholder="Sponor Name" required/>
             <input class="form-control" name="donation" type="number" placeholder="Amount Donated" required/>
-            <input class="form-control" name="url" type="text" placeholder="Logo URL" />
+            <input class="form-control" name="url" type="text" placeholder="Website URL" />
+            <input class="form-control" name="img_url" type="text" placeholder="Logo URL" />
           </div>
         </form>
       </div>

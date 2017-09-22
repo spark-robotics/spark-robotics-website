@@ -93,16 +93,12 @@ app.get('/beta', loadCurrentUser, requireAuth, (req,res)=>{
 
 app.get('/sponsors', loadCurrentUser, function(req,res){
   var sponsors;
-  // db.Sponsors.findAll({
-  //   where: {
-  //     id:{
-  //       $gte: 0
-  //     }
-  //   }
-  // }).then(s=>{
-  //   sponsors = s;
-  // });
-  res.render('sponsors', {user: req.currentUser});
+  db.Sponsors.findAll().then(s=>{
+    sponsors = s;
+  }).then(e=>{
+    res.render('sponsors', {user: req.currentUser, sponsors: sponsors});
+  });
+
 });
 
 
@@ -178,6 +174,7 @@ app.get("/new", (req,res)=>{
 
 app.post('/add/sponsor', urlencodedParser,(req,res)=>{
   console.log(req.body.name);
+  db.Sponsors.create({name: req.body.name, donation: req.body.donation, img_url: req.body.img_url, url: req.body.url});
   res.redirect('/sponsor');
 });
 

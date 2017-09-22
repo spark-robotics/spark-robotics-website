@@ -10,7 +10,9 @@ body, header {
     width: 100%;
     height: 97.5%;
 }
-
+.center{
+  text-align: center;
+}
 iframe{
   width: 100%;
   height: 300px;
@@ -403,7 +405,7 @@ video{
   align-items: flex-start;
 }
 .modal{
-  color: black; 
+  color: black;
 }
 
 .bios-desc{
