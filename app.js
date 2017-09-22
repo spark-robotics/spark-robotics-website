@@ -210,54 +210,66 @@ app.post('/contact/send', urlencodedParser, (req,res)=>{
     db.BannedIps.findAll().then(ips=>{
       for(var i = 0; i < ips.length; i++){
         if(ip == ips[i].ip){
+          console.log(ips[i].ip);
           valid = false;
+          console.log("BANNED");
+          break;
         }
       }
+    }).then(e=>{
+
+      if(valid){
+        reqs.post(
+          'https://hooks.slack.com/services/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',
+          { json: {
+              text: "New Message from website",
+              attachments:[{
+                text: "*Name:* " + req.body.name + "\n" + "*Email:* " + req.body.email + "\n" + "*Team Number:* " + req.body.team_number + "\n\n" + "*IP:* " + ip,
+                color: '#'+Math.floor(Math.random()*16777215).toString(16),
+                mrkdwn_in: ["text"]
+              },
+              {
+                text: "_" + req.body.body + "_",
+                color: '#'+Math.floor(Math.random()*16777215).toString(16),
+                mrkdwn_in: ["text"]
+              },
+              {
+                title: "Would you like to block this IP?",
+                fallback: "Unable to block this IP",
+                callback_id: "metke_alpha_beta",
+                attachment_type: "default",
+                actions: [
+                     {
+                         name: "block",
+                         text: "Block",
+                         type: "button",
+                         value: ip +""
+                     },
+                 ]
+              }
+            ],
+         } },
+          function (error, response, body) {
+              if (!error && response.statusCode == 200) {
+                  res.redirect('/contact?valid=sent');
+              }
+              else{
+                res.redirect('/contact?valid=error');
+              }
+          }
+      );
+      }
+      else{
+        res.redirect('/contact');
+      }
+
+
+
     });
 
 
+console.log(valid);
 
-if(valid){
-  reqs.post(
-    'https://hooks.slack.com/services/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',
-    { json: {
-        text: "New Message from website",
-        attachments:[{
-          text: "*Name:* " + req.body.name + "\n" + "*Email:* " + req.body.email + "\n" + "*Team Number:* " + req.body.team_number + "\n\n" + "*IP:* " + ip,
-          color: '#'+Math.floor(Math.random()*16777215).toString(16),
-          mrkdwn_in: ["text"]
-        },
-        {
-          text: "_" + req.body.body + "_",
-          color: '#'+Math.floor(Math.random()*16777215).toString(16),
-          mrkdwn_in: ["text"]
-        },
-        {
-          title: "Would you like to block this IP?",
-          fallback: "Unable to block this IP",
-          callback_id: "metke_alpha_beta",
-          attachment_type: "default",
-          actions: [
-               {
-                   name: "block",
-                   text: "Block",
-                   type: "button",
-                   value: ip
-               },
-           ]
-        }
-      ],
-   } },
-    function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            res.redirect('/contact?valid=sent');
-        }
-        else{
-          res.redirect('/contact?valid=error');
-        }
-    }
-);
-}
 });
 
 
