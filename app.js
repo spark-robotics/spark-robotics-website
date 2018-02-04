@@ -1,35 +1,30 @@
 /*jshint esversion: 6 */
 
-var express = require('express'),
-app = express(),
-//pg = require('pg'),
-bodyParser = require('body-parser'),
-parials = require('express-partials'),
-session = require('express-session'),
-bcrypt = require('bcrypt'),
-reqs = require('request'),
-sequelize = require('sequelize');
-//client = new pg.Client();
+var express = require('express');
+var app = express();
+var bodyParser = require('body-parser');
+var parials = require('express-partials');
+var session = require('express-session');
+var multer = require('multer');
+var bcrypt = require('bcrypt');
+var reqs = require('request');
+var sequelize = require('sequelize');
+var upload = multer({ dest: '/public/img/sponsors/' })
 app.set('port', (process.env.PORT || 8080));
 
 var slackToken = "MxYYSBXL3PX0Vuauf0d1kBcJ";
 
-
-
-
-
-
-//var db = require(__dirname + '/models/database.js');
 var db = require(__dirname + '/models/database_test.js');
-//var users = new db.Users();
-
-
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/public'));
-app.use('/bower_components',express.static(__dirname + '/bower_components'));
 
+
+//app.use('routes', __dirname + '/routes/pages.js');
+
+
+app.use('/bower_components',express.static(__dirname + '/bower_components'));
 app.enable('trust proxy');
 
 app.use(parials());
@@ -51,7 +46,6 @@ function requireAuth(req, res, next){
   }
 }
 function loadCurrentUser(req, res, next){
-
   if(req.session.logged){
     db.Users.findOne({
       where:{
@@ -65,6 +59,7 @@ function loadCurrentUser(req, res, next){
     req.currentUser = false;
     next();
   }
+
 }
 
 /* GET REQUESTS */
@@ -100,7 +95,6 @@ app.get('/sponsors', loadCurrentUser, function(req,res){
   });
 
 });
-
 
 app.get('/contact', loadCurrentUser, function(req,res){
   sess = req.session;
@@ -172,8 +166,7 @@ app.get("/new", (req,res)=>{
   res.render('new', {user: false});
 });
 
-app.post('/add/sponsor', urlencodedParser,(req,res)=>{
-  console.log(req.body.name);
+app.post('/add/sponsor',upload.single('sponsor'), urlencodedParser,(req,res)=>{
   db.Sponsors.create({name: req.body.name, donation: req.body.donation, img_url: req.body.img_url, url: req.body.url});
   res.redirect('/sponsor');
 });

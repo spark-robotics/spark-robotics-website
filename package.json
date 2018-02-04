@@ -17,6 +17,7 @@
     "express": "^4.15.2",
     "express-partials": "^0.3.0",
     "express-session": "^1.15.2",
+    "multer": "^1.3.0",
     "pg": "^7.3.0",
     "pg-hstore": "^2.3.2",
     "sequelize": "^4.8.0"

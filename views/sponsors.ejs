@@ -8,16 +8,101 @@
 <hr class="hr-white"/>
 <div class="sponsor-list">
 
-  <!-- Sponsors like this -->
+<div class="sponsor-sec-flex">
+
+
+<section class="diamond">
+<h1>Diamond</h1>
+<hr class="hr-white"/>
 <% for(var i = 0; i < sponsors.length; i++){%>
-  <div class="card card-sponsor">
-    <img class="card-img-top img-responsives bio-pic" src="<%=sponsors[i].img_url%>"/>
-  </div>
+  <%if(sponsors[i].donation >= 2500){%>
+    <div class="card card-sponsor-diamond">
+        <a href="<%=sponsors[i].url%>"><img class="card-img-top img-responsives bio-pic" src="<%=sponsors[i].img_url%>"/></a>
+    </div>
+  <%}%>
 <%}%>
+</section>
+<h1>Gold</h1>
+<hr class="hr-white"/>
+<section class="sponsor-sec gold">
+
+<hr />
+<% for(var i = 0; i < sponsors.length; i++){%>
+  <%if(sponsors[i].donation >= 1000 && sponsors[i].donation <2500){%>
+    <div class="card card-sponsor-lg">
+    <img class="card-img-top img-responsi2ves bio-pic" src="<%=sponsors[i].img_url%>"/>
+    </div>
+
+  <%}%>
+<%}%>
+</section>
+<h1>Silver</h1>
+<hr class="hr-white"/>
+<section class="sponsor-sec silver">
+
+
+<% for(var i = 0; i < sponsors.length; i++){%>
+  <%if(sponsors[i].donation >= 500 && sponsors[i].donation <1000){%>
+    <div class="card card-sponsor-lg">
+      <img class="card-img-top img-responsives bio-pic" src="<%=sponsors[i].img_url%>"/>
+    </div>
+
+  <%}%>
+<%}%>
+</section>
+<h1>Bronze</h1>
+<hr class="hr-white"/>
+
+<section class="sponsor-sec bronze">
+
+<% for(var i = 0; i < sponsors.length; i++){%>
+  <%if(sponsors[i].donation >= 250 && sponsors[i].donation <500){%>
+    <div class="card card-sponsor-md">
+      <img class="card-img-top img-responsives bio-pic" src="<%=sponsors[i].img_url%>"/>
+    </div>
+  <%}%>
+<%}%>
+</section>
+<h1>Supporter</h1>
+<hr class="hr-white"/>
+<section class="sponsor-sec supporter">
+
+
+<% for(var i = 0; i < sponsors.length; i++){%>
+  <%if(sponsors[i].donation >= 100 && sponsors[i].donation <250){%>
+    <div class="card card-sponsor-sm">
+      <img class="card-img-top img-responsives bio-pic" src="<%=sponsors[i].img_url%>"/>
+    </div>
+  <%}%>
+<%}%>
+</section>
+<h1>Contributor</h1>
+<hr class="hr-white"/>
+<section class="sponsor-sec contributor">
+
+
+<% for(var i = 0; i < sponsors.length; i++){%>
+
+  <%if(sponsors[i].donation >= 1 && sponsors[i].donation <100){%>
+    <div class="card card-sponsor-sm">
+      <h4><%=sponsors[i].name%></h4>
+    </div>
+  <%}%>
+<%}%>
+</section>
+
+
 </div>
 
 
-  <div class="popup">
+  <!-- Sponsors like this -->
+
+
+
+</div>
+
+
+  <%# <div class="popup">
     <a href="/contact" class="popup-link link-hide"><h5 class="center">Want to become a sponsor? Contact us here!</h5></a>
       <a class="close-button">
         <i class="fa fa-times close ns-close" aria-hidden="true"></i>
@@ -30,7 +115,7 @@
      $('.popup').hide();
 
    });
-</script>
+</script> %>
 
 <% if(user) { %>
 <div class="modal" id="addSponsorModal">
@@ -47,6 +132,7 @@
           <div class="form-group">
             <input class="form-control" name="name" type="text" placeholder="Sponor Name" required/>
             <input class="form-control" name="donation" type="number" placeholder="Amount Donated" required/>
+            <input type="file" />
             <input class="form-control" name="url" type="text" placeholder="Website URL" />
             <input class="form-control" name="img_url" type="text" placeholder="Logo URL" />
           </div>
