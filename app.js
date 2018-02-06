@@ -5,11 +5,10 @@ var app = express();
 var bodyParser = require('body-parser');
 var parials = require('express-partials');
 var session = require('express-session');
-var multer = require('multer');
 var bcrypt = require('bcrypt');
 var reqs = require('request');
 var sequelize = require('sequelize');
-var upload = multer({ dest: '/public/img/sponsors/' })
+
 app.set('port', (process.env.PORT || 8080));
 
 var slackToken = "MxYYSBXL3PX0Vuauf0d1kBcJ";
