@@ -165,7 +165,7 @@ app.get("/new", (req,res)=>{
   res.render('new', {user: false});
 });
 
-app.post('/add/sponsor',upload.single('sponsor'), urlencodedParser,(req,res)=>{
+app.post('/add/sponsor', urlencodedParser,(req,res)=>{
   db.Sponsors.create({name: req.body.name, donation: req.body.donation, img_url: req.body.img_url, url: req.body.url});
   res.redirect('/sponsor');
 });
